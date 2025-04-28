@@ -30,7 +30,7 @@ class Slide(BaseSlide):
     async def get_info(self):
         return self.slide_info
 
-    async def get_region(self, level, start_x, start_y, size_x, size_y, padding_color=None, z=0):
+    async def get_region(self, level, start_x, start_y, size_x, size_y, padding_color=None, z=0, icc_intent=None):
         # Flip level since the format assumes lowest level is lowest detail while highest level is highest detail
         level = self.max_zoom - level
 
@@ -43,10 +43,10 @@ class Slide(BaseSlide):
         tile = tile.reshape(256, 256, 3).transpose(2, 0, 1)
         return tile
 
-    async def get_thumbnail(self, max_x, max_y):
+    async def get_thumbnail(self, max_x, max_y, icc_intent=None):
         return None
 
-    async def get_tile(self, level, tile_x, tile_y, padding_color=None, z=0):
+    async def get_tile(self, level, tile_x, tile_y, padding_color=None, z=0, icc_intent=None):
         if level > self.max_zoom:
             raise ValueError("Tile level too high")
         # Flip level since the format assumes lowest level is lowest detail while highest level is highest detail

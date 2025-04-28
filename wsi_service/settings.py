@@ -36,8 +36,9 @@ class Settings(BaseSettings):
     max_thumbnail_size: int = 500
     root_path: str = ""
 
+    # Todo: batch queries do not apply padding - implement or document
     # default color for padding of image regions out of image extent
     padding_color: tuple = (255, 255, 255)
-    get_tile_apply_padding: bool = False
+    apply_padding: bool = True
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", env_prefix="ws_", extra="ignore")

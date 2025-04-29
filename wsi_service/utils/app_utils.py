@@ -28,6 +28,7 @@ supported_image_formats = {
     "jpeg": "image/jpeg",
     "png": "image/png",
     "tiff": "image/tiff",
+    "raw": "image/raw"
 }
 
 alternative_spellings = {"jpg": "jpeg", "tif": "tiff"}

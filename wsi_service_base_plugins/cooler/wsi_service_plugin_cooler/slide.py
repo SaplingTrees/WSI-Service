@@ -3,6 +3,7 @@ import xml.etree.ElementTree as xml
 from threading import Lock
 
 import logging
+logger = logging.getLogger("uvicorn")
 
 import numpy as np
 from fastapi import HTTPException
@@ -14,7 +15,6 @@ from wsi_service.models.v3.slide import SlideLevel, SlideExtent, SlideInfo, Slid
 from wsi_service.slide import Slide as BaseSlide
 from wsi_service.utils.slide_utils import get_rgb_channel_list
 
-logger = logging.getLogger("uvicorn")
 TILE_SIZE = 256
 
 class Slide(BaseSlide):
@@ -39,8 +39,10 @@ class Slide(BaseSlide):
         resolution = self.min_bin_size * (2 ** (self.max_zoom - level))
 
         tile = self._make_tile(c, resolution, start_x, start_y, size_x, size_y, "default")
-        tile = np.array([self._assign_color(x) for x in tile])
-        tile = tile.reshape(256, 256, 3).transpose(2, 0, 1)
+        #tile = np.array([self._assign_color(x) for x in tile])
+        tile = tile.reshape(1, size_x, size_y) #.transpose(2, 0, 1)
+
+        #tile = tile.reshape(256, 256, 3).transpose(2, 0, 1)
         return tile
 
     async def get_thumbnail(self, max_x, max_y, icc_intent=None):
@@ -59,9 +61,11 @@ class Slide(BaseSlide):
         resolution = self.min_bin_size * (2 ** (self.max_zoom - level))
 
         tile = self._make_tile(c, resolution, start_x, start_y, self.slide_info.tile_extent.x, self.slide_info.tile_extent.y, "default")
-        tile = np.array([self._assign_color(x) for x in tile])
+        # tile = np.array([self._assign_color(x) for x in tile])
 
-        tile = tile.reshape(256, 256, 3).transpose(2, 0, 1)
+       # tile = np.arange(1, 65537).astype(np.float32)
+        tile = tile.reshape(1, 256, 256) #.transpose(2, 0, 1)
+        
         return tile
 
     # private
